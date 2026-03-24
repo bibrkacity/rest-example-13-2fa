@@ -1,0 +1,30 @@
+{
+  "preset": "psr12",
+  "rules": {
+    "general_phpdoc_annotation_remove": false,
+    "general_phpdoc_tag_rename": false,
+    "phpdoc_no_empty_return": false,
+    "phpdoc_no_package": false,
+    "no_superfluous_phpdoc_tags": false,
+    "phpdoc_no_alias_tag": false,
+    "single_quote": false,
+    "class_attributes_separation": {
+      "elements": {
+        "const": "none",
+        "property": "none",
+        "method": "one",
+        "trait_import": "none",
+        "case": "none"
+      }
+    },
+    "trailing_comma_in_multiline": true,
+    "blank_line_after_namespace": true,
+    "declare_parentheses": true,
+    "blank_line_before_statement": {
+      "statements": ["return"]
+    },
+    "multiline_promoted_properties": {
+      "minimum_number_of_parameters": 3
+    }
+  }
+}
