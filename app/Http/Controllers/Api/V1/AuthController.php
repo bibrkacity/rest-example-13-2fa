@@ -105,10 +105,8 @@ class AuthController extends ApiController
     {
 
         $user = auth()->user();
-        $user->tokens()->delete(); // Все устройства
-
-        // $user->currentAccessToken()->delete(); //Только текущее устройство
-        return new JsonResponse(data: ['data' => ['message' => 'Ok']], status: ResponseAlias::HTTP_OK, json: false);
+        $user->tokens()->delete();
+        return new JsonResponse(data: null, status: ResponseAlias::HTTP_NO_CONTENT, json: false);
     }
 
     #[OA\Post(
