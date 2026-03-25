@@ -98,7 +98,7 @@ class AuthController extends ApiController
         ],
         tags: ['Auth'],
         responses: [
-            new OA\Response(response: ResponseAlias::HTTP_OK, description: 'Message Ok'),
+            new OA\Response(response: ResponseAlias::HTTP_NO_CONTENT, description: 'Successfully logout'),
         ]
     )]
     public function logout(): JsonResponse
