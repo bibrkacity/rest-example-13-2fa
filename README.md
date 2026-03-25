@@ -4,7 +4,7 @@ This is an example of REST API with Laravel 13 with 2fa, for learning purposes. 
 
 ## Installation
 
-1. Clone this repository (https://github.com/bibrkacity/REST-example-with-Laravel-13.git) and `cd` into root folder ( *your-path*/rest-example-13)
+1. Clone this repository (https://github.com/bibrkacity/rest-example-13-2fa.git) and `cd` into root folder ( *your-path*/rest-example-13)
 2. Copy `.env.example` to `.env`
 3. Run `composer install`
 4. Run `./vendor/bin/sail up`
