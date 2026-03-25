@@ -62,7 +62,7 @@ The simplest way to display the QR code in the browser is to create file `qr.htm
 ```html
 <img src="" alt="qr" />
 ```
-and put the value of the field `qrCodeInline` of the response from the route `/api/v1/auth/enable-2fa` in the `src` attribute of the `img` tag.
+and put the value of the field `qrCodeInline` of the response from the route `/api/v1/auth/enable-2fa` in the `src` attribute of the `img` tag. Now you can open the file `qr.html` in the browser.
  
 ## Unit testing of the REST API
 
