@@ -2,6 +2,16 @@
 
 This is an example of REST API with Laravel 13 with 2fa, for learning purposes. Use DTO and Repository patterns for index().  I will be glad to see your pull requests.
 
+<!-- TOC -->
+  * [Installation](#installation)
+  * [Work with Swagger UI](#work-with-swagger-ui)
+  * [MySQL console](#mysql-console)
+  * [The sequence of the authorization in case of the 2fa](#the-sequence-of-the-authorization-in-case-of-the-2fa-)
+    * [How to display the QR code in the browser when local testing/](#how-to-display-the-qr-code-in-the-browser-when-local-testing)
+  * [Unit testing of the REST API](#unit-testing-of-the-rest-api)
+  * [Learning the REST API](#learning-the-rest-api)
+<!-- TOC -->
+
 ## Installation
 
 1. Clone this repository (https://github.com/bibrkacity/rest-example-13-2fa.git) and `cd` into root folder ( *your-path*/rest-example-13)
