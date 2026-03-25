@@ -16,7 +16,7 @@ return new class () extends Migration {
                 ->after('password');
             $table->string('google2fa_secret',20)->nullable()
                 ->after('required2fa');
-            $table->string('google2fa_enabled')->default('0')
+            $table->unsignedTinyInteger('google2fa_enabled')->default('0')
                 ->after('google2fa_secret');
         });
     }
