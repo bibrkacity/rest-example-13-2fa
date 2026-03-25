@@ -106,6 +106,7 @@ class AuthController extends ApiController
 
         $user = auth()->user();
         $user->tokens()->delete();
+
         return new JsonResponse(data: null, status: ResponseAlias::HTTP_NO_CONTENT, json: false);
     }
 
