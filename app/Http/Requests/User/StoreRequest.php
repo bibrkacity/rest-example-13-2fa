@@ -18,6 +18,9 @@ class StoreRequest extends FormRequest
 
     public function authorize(): bool
     {
+        /**
+         * Determine if the $this->user is authorized to store user model.
+         */
         return true;
     }
 }

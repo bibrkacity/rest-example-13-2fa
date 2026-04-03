@@ -3,8 +3,6 @@
 namespace App\DTO;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\ValidationException;
 
 /**
  *  Base class for DTO-classes
@@ -94,11 +92,6 @@ abstract readonly class DTO
 
     protected function fromRequest(Request $request): void
     {
-        $validator = Validator::make($request->all(), $this->getRules($request));
-
-        if ($validator->fails()) {
-            throw new ValidationException($validator);
-        }
 
         $defaults = $this->getDefaults();
 
@@ -108,18 +101,6 @@ abstract readonly class DTO
         $this->sortName = $request->input('sort_name', $defaults['sortName']);
         $this->sortDir = $request->input('sort_dir', $defaults['sortDir']);
 
-    }
-
-    protected function getRules(Request $request): array
-    {
-
-        return [
-            'page' => 'int|min:1',
-            'per_page' => 'int|min:0',
-            'sort_dir' => 'in:asc,desc',
-            'sort_name' => 'string',
-            'query' => 'string',
-        ];
     }
 
     protected function getDefaults(): array

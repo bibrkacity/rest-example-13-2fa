@@ -21,16 +21,6 @@ readonly class UserDTO extends DTO
     }
 
     #[\Override]
-    protected function getRules(Request $request): array
-    {
-
-        $rules = parent::getRules($request);
-        $rules['email'] = 'email';
-
-        return $rules;
-    }
-
-    #[\Override]
     protected function getSortNameDefault(): string
     {
         return 'name';

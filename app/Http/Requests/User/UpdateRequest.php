@@ -20,6 +20,9 @@ class UpdateRequest extends FormRequest
 
     public function authorize(): bool
     {
+        /**
+         * Determine if the $this->user is authorized to update user model.
+         */
         return true;
     }
 }
