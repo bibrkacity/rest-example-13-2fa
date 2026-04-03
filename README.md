@@ -1,6 +1,11 @@
 # The example of REST API with Laravel 13 with 2fa, php 8.5
 
-This is an example of REST API with Laravel 13 with 2fa, for learning purposes. Use DTO and Repository patterns for index().  I will be glad to see your pull requests.
+This is an example of REST API with Laravel 13 with 2fa, for learning purposes.
+
+Use Action classes for controllers.
+Use DTO and Repository patterns for index().  
+
+I will be glad to see your pull requests.
 
 <!-- TOC -->
   * [Installation](#installation)
