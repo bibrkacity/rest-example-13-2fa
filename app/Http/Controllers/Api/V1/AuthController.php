@@ -2,23 +2,19 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Enums\VariableNames;
-use App\Exceptions\ApiException;
-use App\Exceptions\AuthorizationException;
+use App\Actions\Auth\Enable2fa;
+use App\Actions\Auth\Login;
+use App\Actions\Auth\Verify2fa;
+use App\Actions\Auth\Verify2faLogin;
 use App\Http\Controllers\Api\ApiController;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\Verify2faLoginRequest;
 use App\Http\Requests\Auth\Verify2faRequest;
 use App\Http\Responses\Enable2faResponse;
 use App\Http\Responses\LoginResponse;
-use App\Models\User;
-use Bibrkacity\SanctumSession\Services\SanctumSession;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 use OpenApi\Attributes as OA;
-use PragmaRX\Google2FAQRCode\Google2FA;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 
 class AuthController extends ApiController
@@ -48,24 +44,9 @@ class AuthController extends ApiController
             new OA\Response(response: ResponseAlias::HTTP_OK, description: 'API-token'),
         ]
     )]
-    public function login(LoginRequest $request): LoginResponse
+    public function login(LoginRequest $request, Login $action): LoginResponse
     {
-
-        $email = trim($request->input('email'));
-        $password = trim($request->input('password'));
-
-        $query = User::query()
-            ->where('email', $email);
-        $user = $query->first();
-
-        if (! $user || ! Hash::check($password, $user->password)) {
-            throw new ApiException('Invalid login or password', ResponseAlias::HTTP_UNAUTHORIZED);
-        }
-
-        $token = $user->createToken('start');
-
-        return new LoginResponse($user, $token->plainTextToken);
-
+        return $action->handle($request);
     }
 
     #[OA\Get(
@@ -83,9 +64,7 @@ class AuthController extends ApiController
     public function getUser(Request $request): JsonResponse
     {
 
-        $user = $request->user();
-
-        return new JsonResponse(data: ['data' => $user->toArray()], status: ResponseAlias::HTTP_OK, json: false);
+        return new JsonResponse(data: ['data' => $request->user()->toArray()], status: ResponseAlias::HTTP_OK, json: false);
 
     }
 
@@ -101,11 +80,9 @@ class AuthController extends ApiController
             new OA\Response(response: ResponseAlias::HTTP_NO_CONTENT, description: 'Successfully logout'),
         ]
     )]
-    public function logout(): JsonResponse
+    public function logout(Request $request): JsonResponse
     {
-
-        $user = auth()->user();
-        $user->tokens()->delete();
+        $request->user()->tokens()->delete();
 
         return new JsonResponse(data: null, status: ResponseAlias::HTTP_NO_CONTENT, json: false);
     }
@@ -122,37 +99,9 @@ class AuthController extends ApiController
             new OA\Response(response: ResponseAlias::HTTP_OK, description: 'QR-code for confirmation 2fa in the Google Authenticator'),
         ]
     )]
-    public function enable2fa(Request $request): Enable2faResponse
+    public function enable2fa(Request $request, Enable2fa $action): Enable2faResponse
     {
-
-        $user = $request->user();
-
-        $google2fa = new Google2FA();
-
-        $secret = $google2fa->generateSecretKey();
-        $user->google2fa_secret = $secret;
-        $user->save();
-
-        $env = config('app.env');
-
-        $title = $env == 'production'
-            ? config('app.name')
-            : config('app.name').'-'.substr($env, 0, 3);
-
-        $qrCodeInline = $google2fa->getQRCodeInline(
-            $title,
-            $user->email,
-            $secret
-        );
-
-        $qrUrl = $google2fa->getQRCodeUrl(
-            $title,
-            $user->email,
-            $secret
-        );
-
-        return new Enable2faResponse($secret, $qrCodeInline, $qrUrl);
-
+        return $action->handle($request);
     }
 
     #[OA\Post(
@@ -181,25 +130,9 @@ class AuthController extends ApiController
             new OA\Response(response: ResponseAlias::HTTP_OK, description: '2FA enabled successfully'),
         ]
     )]
-    public function verify2fa(Verify2faRequest $request): JsonResponse
+    public function verify2fa(Verify2faRequest $request, Verify2fa $action): JsonResponse
     {
-        $user = $request->user();
-
-        $google2fa = new Google2FA();
-
-        $secret = $user->google2fa_secret;
-
-        $otp = str_replace(' ', '', $request->input('otp'));
-
-        if ($google2fa->verifyKey($secret, $otp)) {
-            $user->google2fa_enabled = User::ENABLED_2FA;
-            $user->save();
-            SanctumSession::put($request->bearerToken(), VariableNames::VERIFIED2FA->value, 'boolean', true);
-
-            return new JsonResponse(['message' => '2FA enabled successfully'], ResponseAlias::HTTP_OK);
-        } else {
-            throw new AuthorizationException('Invalid otp', Response::HTTP_FORBIDDEN);
-        }
+        return $action->handle($request);
     }
 
     #[OA\Post(
@@ -249,26 +182,9 @@ class AuthController extends ApiController
             ),
         ]
     )]
-    public function verify2faLogin(Verify2faLoginRequest $request): JsonResponse
+    public function verify2faLogin(Verify2faLoginRequest $request, Verify2faLogin $action): JsonResponse
     {
+        return $action->handle($request);
 
-        $otp = str_replace(' ', '', $request->input('otp'));
-
-        $user = $request->user();
-
-        $secret = $user->google2fa_secret;
-
-        $google2fa = new Google2FA();
-
-        if ($google2fa->verifyKey($secret, $otp)) {
-
-            SanctumSession::put($request->bearerToken(), VariableNames::VERIFIED2FA->value, 'boolean', true);
-
-            return new JsonResponse(data: [
-                'success' => true,
-            ], status: ResponseAlias::HTTP_OK, json: false);
-        } else {
-            throw new AuthorizationException('Invalid OTP', Response::HTTP_FORBIDDEN);
-        }
     }
 }

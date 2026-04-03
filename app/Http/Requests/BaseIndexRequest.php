@@ -4,8 +4,15 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * Base class for index requests with pagination
+ */
 class BaseIndexRequest extends FormRequest
 {
+    /**
+     * Rules for index requests with pagination
+     * @return string[]
+     */
     public function rules(): array
     {
         return [
