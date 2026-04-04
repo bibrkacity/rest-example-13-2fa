@@ -2,7 +2,7 @@
 
 This is an example of REST API with Laravel 13 with 2fa, for learning purposes.
 
-Use Action classes for controllers.
+Use Action classes for clean code of the controllers according to [Laracast](https://laracasts.com/series/laravel-from-scratch-2026/episodes/37).
 Use DTO and Repository patterns for index().  
 
 I will be glad to see your pull requests.
