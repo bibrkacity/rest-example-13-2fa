@@ -19,7 +19,7 @@ class BaseIndexRequest extends FormRequest
             'page' => 'int|min:1',
             'per_page' => 'int|min:0',
             'sort_dir' => 'in:asc,desc',
-            'sort_name' => 'string',
+            'sort_name' => ['string'],
             'query' => 'string',
         ];
     }
