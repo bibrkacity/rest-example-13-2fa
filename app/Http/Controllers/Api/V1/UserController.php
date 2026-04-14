@@ -155,7 +155,7 @@ class UserController extends ApiController
         ),
         tags: ['Users'],
         responses: [
-            new OA\Response(response: ResponseAlias::HTTP_OK, description: 'Created user in JSON'),
+            new OA\Response(response: ResponseAlias::HTTP_CREATED, description: 'Created user in JSON'),
         ]
     )]
     public function store(StoreRequest $request, StoreUser $action): JsonResponse
