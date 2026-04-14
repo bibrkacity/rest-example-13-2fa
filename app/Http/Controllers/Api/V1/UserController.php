@@ -39,6 +39,17 @@ class UserController extends ApiController
         parameters: [
 
             new OA\Parameter(
+                name: 'email',
+                description: 'Email of user or part of it',
+                in: 'query',
+                required: false,
+                schema: new OA\Schema(
+                    type: 'string',
+                    format: 'email',
+                ),
+            ),
+
+            new OA\Parameter(
                 name: 'page',
                 description: 'Page number',
                 in: 'query',
