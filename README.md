@@ -27,7 +27,7 @@ I will be glad to see your pull requests.
 6. Run `./vendor/bin/sail artisan db:seed`
 7. Run `php artisan l5-swagger:generate`
 
-Now you can visit the Swagger UI at http://127.0.0.1:8000/api/docs 
+Now you can visit the Swagger UI at http://127.0.0.1:8080/api/documentation 
 
 ## Work with Swagger UI
 
