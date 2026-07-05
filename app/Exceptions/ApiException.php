@@ -21,7 +21,7 @@ class ApiException extends Exception
 
     public function __construct(string $message, int $statusCode = ResponseAlias::HTTP_INTERNAL_SERVER_ERROR, array $args = [])
     {
-        parent::__construct(message:$message);
+        parent::__construct(message: $message);
         $this->statusCode = $statusCode;
         $this->args = $args;
     }
@@ -38,16 +38,17 @@ class ApiException extends Exception
     protected function exceptionMessage(): string
     {
         $message = $this->getMessage();
+        $reply = $message;
         if (config('app.debug')) {
-            $reply = get_class($this) . ': ' . $message;
-            $reply .= '. File: ' . $this->getFile();
-            $reply .= '. Line: ' . $this->getLine();
-            if (!empty($this->args)) {
-                $reply .= '. args: ' . var_export($this->args, true);
-            }
 
-        } else {
-            $reply = $message;
+            $reply .= '. Class: ';
+            $reply .= $this->args['class'] ?? get_class($this);
+            $reply .= '. File: ';
+            $reply .= $this->args['file'] ?? $this->getFile();
+            $reply .= '. Line: '.$this->getLine();
+            if (! empty($this->args)) {
+                $reply .= '. args: '.var_export($this->args, true);
+            }
         }
 
         return $reply;

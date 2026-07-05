@@ -9,7 +9,7 @@
     ],
     "license": "MIT",
     "require": {
-        "php": "^8.3",
+        "php": "^8.4",
         "bacon/bacon-qr-code": "^3.0",
         "bibrkacity/sanctum_session": "^1.1",
         "darkaonline/l5-swagger": "^11.0",
