@@ -8,11 +8,20 @@ use Exception;
 use Illuminate\Http\JsonResponse;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 
+/**
+ * Base class for project exceptions
+ */
 class ApiException extends Exception
 {
     protected const string ERROR_CAPTION = 'error';
 
     protected int $statusCode;
+
+    /**
+     * Additional arguments for exception for custom messages
+     *
+     * @var array
+     */
     protected array $args {
         set {
             $this->args = $value;
@@ -26,6 +35,10 @@ class ApiException extends Exception
         $this->args = $args;
     }
 
+    /**
+     * Render the exception into an HTTP response.
+     * @return JsonResponse
+     */
     public function render(): JsonResponse
     {
         report($this);
